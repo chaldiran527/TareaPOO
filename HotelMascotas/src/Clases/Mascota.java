@@ -3,12 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Clases;
+import java.io.Serializable;
 
 /**
  *
  * @author Usuario
  */
-public abstract class Mascota {
+public abstract class Mascota implements Serializable{
     protected String nombreDueño;
     protected String nombreMascota;
     protected String raza;

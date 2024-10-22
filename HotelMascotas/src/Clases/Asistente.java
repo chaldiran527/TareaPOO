@@ -4,6 +4,11 @@
  */
 package Clases;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 /**
  *
  * @author Usuario
@@ -14,6 +19,13 @@ interface IRegistrable {
 }
 
 public class Asistente implements IRegistrable {
+    private Hotel hotel;
+
+    public Asistente(Hotel hotel) {
+        this.hotel = hotel;
+    }
+    
+    
     @Override
     public boolean registrar(Object dato) {
         try (FileWriter fw = new FileWriter("bitacora.txt", true);

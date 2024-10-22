@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author Usuario
  */
-public class Contrato {
+public class Contrato implements Serializable{
     private String numero;
     private Date fechaIngreso;
     private int cantidadDias;
