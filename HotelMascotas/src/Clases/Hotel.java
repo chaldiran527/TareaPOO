@@ -169,4 +169,6 @@ public class Hotel implements IRegistrable{
             }
         }
     }
+    
+    
 }
