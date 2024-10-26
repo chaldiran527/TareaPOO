@@ -14,17 +14,7 @@ public class HotelMascotas {
 
 
     public static void main(String[] args) throws AlimentacionException {
-        
-        Hotel hotel = new Hotel();
-        
-        hotel.ingresarMascota();
-        hotel.ingresarMascota();
-        hotel.ingresarMascota();
-        
-        hotel.listarMascotas();
-        Asistente asistente = new Asistente(hotel);
-        
-        hotel.alimentarMascotas(asistente);
+       
     }
     
 }

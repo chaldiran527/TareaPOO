@@ -14,16 +14,14 @@ import java.io.PrintWriter;
  * @author Usuario
  */
 
-interface IRegistrable {
-    boolean registrar(Object dato);
-}
-
 public class Asistente implements IRegistrable {
     private Hotel hotel;
 
     public Asistente(Hotel hotel) {
         this.hotel = hotel;
     }
+    
+ 
     
     
     @Override

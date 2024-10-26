@@ -22,4 +22,7 @@ public class Pajaro extends Mascota{
     public int getCantAlimentacion() {
         return 1; // Una vez al día
     }
+
+  
+ 
 }

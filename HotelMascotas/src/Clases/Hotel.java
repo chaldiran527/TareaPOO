@@ -4,12 +4,21 @@
  */
 package Clases;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -18,16 +27,19 @@ import java.util.Date;
 public class Hotel implements IRegistrable{
     private List<Contrato> listaMascotas;
     private static final int CAPACIDAD_MAXIMA = 10;
-    private List<String> inventarioAlimentos;
+    private ArrayList<Alimento> inventarioAlimento = new ArrayList <Alimento>();
     private int contadorContratos;
 
     public Hotel() {
         listaMascotas = new ArrayList<>();
-        inventarioAlimentos = new ArrayList<>();
-        inventarioAlimentos.add("Dog Chow");
-        inventarioAlimentos.add("Atun");
-        inventarioAlimentos.add("Semillas");
-        inventarioAlimentos.add("Plankton");
+        Alimento perro = new Alimento("Dog Chow", 10);
+        Alimento gato = new Alimento("Atun", 10);
+        Alimento pajaro = new Alimento("Semillas", 10);
+        Alimento pez = new Alimento("Plankton", 10);
+        inventarioAlimento.add(perro);
+        inventarioAlimento.add(gato);
+        inventarioAlimento.add(pajaro);
+        inventarioAlimento.add(pez);
         contadorContratos = 1;
     }
 
@@ -137,6 +149,10 @@ public class Hotel implements IRegistrable{
         }
         return false; 
     }
+    
+    
+    
+    
 
     private void guardarInquilinos() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("inquilinos.dat"))) {
@@ -145,30 +161,176 @@ public class Hotel implements IRegistrable{
             e.printStackTrace();
         }
     }
+    
+    
+    
+    
 
     public void listarMascotas() {
-        for (Contrato contrato : listaMascotas) {
-            System.out.println(contrato);
+        if (listaMascotas.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Lista vacía.");
+            return;
         }
-    }
-
-    public void alimentarMascotas(Asistente asistente) throws AlimentacionException {
+        StringBuilder mensaje = new StringBuilder("Mascotas \n");
         for (Contrato contrato : listaMascotas) {
+            mensaje.append(contrato).append("\n").append("\n");
+        }
+        JDialog dialog = new JDialog((Frame)null, "Lista de mascotas", true);
+        dialog.setLayout(new BorderLayout());
+
+        // Crear área de texto y panel de desplazamiento
+        JTextArea textArea = new JTextArea(mensaje.toString());
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(400, 300));  // Tamaño preferido del área con scroll
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        // Añadir componentes al diálogo
+        dialog.add(scrollPane, BorderLayout.CENTER);
+
+        // Configurar y mostrar el diálogo
+        dialog.pack();
+        dialog.setLocationRelativeTo(null); // Centrar la ventana
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
+    }
+    
+    
+    
+    
+    public Alimento buscarAlimento(String tipoAlimento){
+        for (Alimento alimento : inventarioAlimento){
+            if (tipoAlimento == alimento.getNombre())
+                return alimento;
+        }
+        return null;
+    }
+    
+    
+    
+    
+    public void mostrarInventario(){
+        if (inventarioAlimento.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Inventario vacío.");
+            return;
+        }
+        StringBuilder mensaje = new StringBuilder("Inventario \n");
+        for (Alimento alimento : inventarioAlimento){
+            mensaje.append(alimento).append("\n").append("\n");
+        }
+        JDialog dialog = new JDialog((Frame)null, "Inventario", true);
+        dialog.setLayout(new BorderLayout());
+
+        // Crear área de texto y panel de desplazamiento
+        JTextArea textArea = new JTextArea(mensaje.toString());
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(400, 300));  // Tamaño preferido del área con scroll
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        // Añadir componentes al diálogo
+        dialog.add(scrollPane, BorderLayout.CENTER);
+
+        // Configurar y mostrar el diálogo
+        dialog.pack();
+        dialog.setLocationRelativeTo(null); // Centrar la ventana
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
+    }
+    
+    
+    
+    
+    
+    public void aumentarCantidadAlimento(){
+        String [] opciones = {"Dog Chow", "Atún", "Semillas", "Plankton"};
+        if (opciones == null){
+            return;
+        }
+        
+        int tipoAlimento = JOptionPane.showOptionDialog(null, "Seleccione el tipo de alimento", "Tipo de alimento", JOptionPane.DEFAULT_OPTION, 
+                          JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+        Alimento alimento;
+        switch(tipoAlimento){
+            case 0: 
+                String perro = "Dog Chow";
+                alimento = buscarAlimento(perro);
+                break;
+                
+            case 1: 
+                String gato = "Atun";
+                alimento = buscarAlimento(gato);
+                break;
+            
+            case 2: 
+                String pajaro = "Semillas";
+                alimento = buscarAlimento(pajaro);
+                break;
+                
+            case 3: 
+                String pez = "Plankton";
+                alimento = buscarAlimento(pez);
+                break;
+                
+            default:
+                return;
+        }
+        alimento.aumentarCantidad();
+    }
+    
+    
+
+    public void alimentarMascotas(Asistente  asistente) throws AlimentacionException {
+        
+        Date fecha = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        String fechaFormateada = formato.format(fecha);
+        asistente.registrar("Fecha y hora: " + fechaFormateada);
+        if (listaMascotas.isEmpty()){
+            JOptionPane.showMessageDialog(null, "No hay mascotas para alimentar.");
+        }
+        for (Contrato contrato : listaMascotas) {
+            
             Mascota mascota = contrato.getMascota();
             String tipoAlimento = mascota.getTipoAlimento();
-            if (inventarioAlimentos.contains(tipoAlimento)) {
-                System.out.println("Alimentando a la mascota " + mascota.nombreMascota + " con el alimento " + tipoAlimento);
-            } else{
-                asistente.registrar("No hay alimento para la mascota: " + mascota.nombreMascota);
-                //throw new AlimentacionException(ERRORES.ALIMENTO_AGOTADO, mascota.nombreMascota);
+            Alimento alimento = buscarAlimento(tipoAlimento);
+            
+            try {
+                boolean mascotaComio = true;
+                
+                if (mascota == null) {
+                    asistente.registrar("No encuentra el expediente de inquilinos, los animales no podrán ser alimentados en esta fecha.");
+                    throw new AlimentacionException(ERRORES.EXPEDIENTE_NO_ENCONTRADO, mascota.nombreMascota);
+                }
+                
+                if (new Random().nextDouble() < 0.1){
+                    asistente.registrar("La mascota: " + mascota.nombreMascota + " no quiso comer.");
+                    mascotaComio = false;
+                    throw new AlimentacionException(ERRORES.NO_COMIO, mascota.nombreMascota);
+                }
+                
+                if (!alimento.reducirCantidad(1)) {
+                    asistente.registrar("No hay alimento para la mascota: " + mascota.nombreMascota);
+                    mascotaComio = false;
+                    throw new AlimentacionException(ERRORES.ALIMENTO_AGOTADO, mascota.nombreMascota);
+                }
+
+                if (mascotaComio){
+                    asistente.registrar("La mascota: " + mascota.nombreMascota + " sí comió.");
+                }
             }
             
-            if (new Random().nextBoolean()){
-                asistente.registrar("La mascota: " + mascota.nombreMascota + " no quiso comer.");
-                //throw new AlimentacionException(ERRORES.NO_COMIO, mascota.nombreMascota);
+            catch (AlimentacionException e){
+                System.out.println("Error al alimentar a " + mascota.nombreMascota + ": " + e.getMessage());
             }
         }
+        asistente.registrar("\n\n");
+        JOptionPane.showMessageDialog(null, "Se terminó el proceso de alimentar a las mascotas.");
     }
-    
-    
 }

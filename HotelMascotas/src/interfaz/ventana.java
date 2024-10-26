@@ -4,7 +4,11 @@
  */
 package interfaz;
 
+import Clases.AlimentacionException;
+import Clases.Asistente;
 import Clases.Hotel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,36 +47,54 @@ public class ventana extends javax.swing.JFrame {
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(726, 453));
         setResizable(false);
 
         jPanel1.setMinimumSize(new java.awt.Dimension(750, 500));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton1.setText("Detalles");
+        jButton1.setName("Detalles"); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, -1, -1));
 
         jButton2.setText("Insertar");
+        jButton2.setName("Insertar"); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 150, -1, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
 
-        jButton3.setText("jButton1");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 150, -1, -1));
+        jButton3.setText("Agregar alimentos");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 150, -1, -1));
 
-        jButton4.setText("Inventario");
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, -1, -1));
+        jButton4.setText("Ver Inventario");
+        jButton4.setName("Inventario"); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, -1, -1));
 
         jButton5.setText("Alimentar");
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 150, -1, -1));
+        jButton5.setName("Alimentar"); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 150, -1, -1));
 
         imagenMascota.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/paws (1).png"))); // NOI18N
         jPanel1.add(imagenMascota, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, 150, 150));
@@ -110,16 +132,32 @@ public class ventana extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    Hotel hotel = new Hotel();
+    Asistente asistente = new Asistente(hotel);
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Hotel hotel = new Hotel();
-        hotel.ingresarMascota();
-        
+      hotel.ingresarMascota();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        hotel.listarMascotas();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        try {
+            hotel.alimentarMascotas(asistente);
+        } catch (AlimentacionException ex) {
+            Logger.getLogger(ventana.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        hotel.mostrarInventario();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        hotel.aumentarCantidadAlimento();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

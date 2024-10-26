@@ -9,5 +9,5 @@ package Clases;
  * @author jessi
  */
 public enum ERRORES {
-    ALIMENTO_AGOTADO, NO_COMIO
+    EXPEDIENTE_NO_ENCONTRADO, ALIMENTO_AGOTADO, NO_COMIO
 }
