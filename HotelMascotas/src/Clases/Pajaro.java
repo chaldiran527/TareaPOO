@@ -10,7 +10,7 @@ package Clases;
  */
 public class Pajaro extends Mascota{
     public Pajaro(String nombreDueño, String nombreMascota, String raza) {
-        super(nombreDueño, nombreMascota, raza);
+        super(nombreDueño, nombreMascota, raza, "Pajaro");
     }
 
     @Override
@@ -20,9 +20,6 @@ public class Pajaro extends Mascota{
 
     @Override
     public int getCantAlimentacion() {
-        return 1; // Una vez al día
+        return 1; // Una vez al día
     }
-
-  
- 
 }
